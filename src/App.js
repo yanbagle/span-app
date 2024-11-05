@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [percentage, setPercentage] = useState(0);
+  const [start, setStart] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+    if (start) {
+      intervalId = setInterval(() => {
+        setPercentage((percentage) => {
+          if (percentage === 100) {
+            return percentage;
+          }
+          return percentage + 1;
+        });
+      }, 10);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [start]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>title</h1>
+      <button
+        onClick={() => {
+          setStart(true);
+        }}
+      >
+        start
+      </button>
+      <div className="progress-bar">
+        <div className="progress" style={{ width: `${percentage}px` }}></div>
+      </div>
     </div>
   );
 }
